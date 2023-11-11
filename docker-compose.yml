@@ -1,0 +1,38 @@
+version: "2.22.0"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql
+      - php
+
+  mysql:
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    env_file:
+      - ./src/.env  # Reference the .env file in the src directory
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src/:/var/www/html
+
+  composer:
+    build:
+      context: .
+      dockerfile: composer.dockerfile
+    volumes:
+        - ./src/:/var/www/html/
+    working_dir: /var/www/html/
