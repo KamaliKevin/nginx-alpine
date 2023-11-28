@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    dd(env('APP_ENV'), env('APP_DEBUG'));
     return view('welcome');
 });

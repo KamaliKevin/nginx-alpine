@@ -1,5 +1,7 @@
 FROM php:8-fpm-alpine
 
+ENV APP_ENV=production
+ENV APP_DEBUG=false
 ENV PHPGROUP=laravel
 ENV PHPUSER=laravel
 

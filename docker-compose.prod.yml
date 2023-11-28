@@ -5,10 +5,34 @@ services:
     build:
       context: .
       dockerfile: nginx.prod.dockerfile
+    depends_on:
+      - mysql
+      - php
+      - npm
     ports:
       - 80:80
       - 443:443
+    restart: always
   php:
     build:
       context: .
       dockerfile: php.prod.dockerfile
+    restart: always
+  npm:
+    image: node:current-alpine
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: [ "/bin/sh", "-c", "npm install && npm run build" ]
+    working_dir: /var/www/html
+  composer:
+    entrypoint: [ "/bin/sh", "-c", "composer install --optimize-autoloader --no-dev" ]
+    working_dir: /var/www/html
+  artisan:
+    build:
+      context: .
+      dockerfile: php.prod.dockerfile
+    volumes:
+      - ./src/:/var/www/html
+    depends_on:
+      - mysql
+    entrypoint: [ "/bin/sh", "-c", "php artisan optimize && php artisan view:cache && php artisan event:cache" ]

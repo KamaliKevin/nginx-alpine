@@ -18,3 +18,5 @@ yarn-error.log
 /.idea
 /.vscode
 ../mysql/
+../laravel-docker.test-key.pem
+../kevin.informaticamajada.es-key.pem
